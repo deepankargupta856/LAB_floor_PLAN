@@ -1,0 +1,67 @@
+:root {
+  --ink: #102235;
+  --muted: #6d8090;
+  --paper: #f4f7f6;
+  --panel: #ffffff;
+  --line: #20394d;
+  --accent: #0c9da4;
+  --accent-soft: #d4f2f0;
+  --blueprint: #0b1624;
+  --blueprint-line: #3b6276;
+  --gold: #d59b42;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--paper); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+body { margin: 0; min-width: 320px; }
+.app-shell { width: min(1500px, calc(100% - 48px)); margin: 0 auto; padding: 34px 0 28px; }
+.topbar { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding-bottom: 20px; border-bottom: 1px solid #cbd7d9; }
+.eyebrow { margin: 0 0 8px; color: var(--accent); font-size: .72rem; font-weight: 800; letter-spacing: .16em; }
+h1, h2, p { margin-top: 0; }
+h1 { margin-bottom: 0; font-size: clamp(1.55rem, 3vw, 2.55rem); line-height: .98; letter-spacing: -.045em; font-weight: 800; }
+.sheet-meta { display: grid; gap: 8px; text-align: right; color: var(--muted); font-size: .7rem; letter-spacing: .13em; font-weight: 750; }
+.summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 24px 0; border: 1px solid #d2dedf; background: #d2dedf; }
+.summary > div { display: grid; gap: 6px; padding: 16px 18px; background: var(--panel); }
+.summary span { color: var(--muted); font-size: .7rem; font-weight: 750; letter-spacing: .1em; text-transform: uppercase; }
+.summary strong { font-size: 1rem; letter-spacing: -.02em; }
+.status { display: flex; align-items: center; gap: 8px; color: #60766c; font-size: .91rem !important; }
+.status i { width: 8px; height: 8px; border-radius: 50%; background: #60aa7b; box-shadow: 0 0 0 4px #e1f0e5; }
+.plan-card { overflow: hidden; border: 1px solid #cbd7d9; background: var(--blueprint); box-shadow: 0 18px 45px rgba(18, 40, 55, .10); }
+.plan-toolbar, .plan-caption { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 12px 16px; color: #b6ced2; font-size: .68rem; font-weight: 750; letter-spacing: .1em; }
+.plan-toolbar { flex-wrap: wrap; border-bottom: 1px solid rgba(151, 206, 210, .2); }
+.plan-toolbar span { display: inline-flex; align-items: center; gap: 7px; }
+.legend-line { display: inline-block; width: 19px; border-top: 3px solid #e9f5ed; }
+.legend-window { display: inline-block; width: 19px; border-top: 4px double #7ce5e8; }
+.legend-point { display: inline-block; width: 8px; height: 8px; border: 2px solid var(--gold); border-radius: 50%; }
+.north-mark { margin-left: auto; color: #eef9f5; }
+.north-mark b { color: var(--gold); font-size: 1.1rem; }
+.floor-plan { width: 100%; aspect-ratio: 1.55 / 1; min-height: 440px; }
+.floor-plan svg { display: block; width: 100%; height: 100%; }
+.plan-caption { border-top: 1px solid rgba(151, 206, 210, .2); font-size: .62rem; }
+.export-panel { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 24px; padding: 18px 20px; border: 1px solid #cbd7d9; background: var(--panel); }
+.export-panel h2 { margin: 0; font-size: 1.05rem; letter-spacing: -.02em; }
+.export-panel .eyebrow { margin-bottom: 5px; }
+.export-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+button { border: 1px solid var(--line); padding: 10px 13px; background: #fff; color: var(--ink); font: inherit; font-size: .78rem; font-weight: 750; cursor: pointer; transition: background .18s, color .18s, transform .18s; }
+button:hover, button:focus-visible { background: var(--ink); color: #fff; transform: translateY(-1px); }
+button:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 2px; }
+footer { display: flex; gap: 10px; margin-top: 18px; color: var(--muted); font-size: .68rem; letter-spacing: .11em; }
+footer span { color: var(--accent); }
+code { font-family: "SFMono-Regular", Consolas, monospace; letter-spacing: 0; }
+
+@media (max-width: 760px) {
+  .app-shell { width: min(100% - 24px, 1500px); padding-top: 22px; }
+  .topbar, .export-panel { align-items: flex-start; flex-direction: column; }
+  .sheet-meta { text-align: left; }
+  .summary { grid-template-columns: repeat(2, 1fr); }
+  .floor-plan { min-height: 330px; aspect-ratio: 1 / 1; }
+  .export-actions { justify-content: flex-start; }
+}
+@media print {
+  body { background: #fff; }
+  .app-shell { width: 100%; padding: 0; }
+  .summary, .export-panel, footer, .plan-toolbar, .plan-caption { display: none; }
+  .topbar { padding: 0 0 12px; }
+  .plan-card { border: 0; box-shadow: none; }
+  .floor-plan { min-height: 0; }
+}

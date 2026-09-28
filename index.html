@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A scalable architectural-style 2D floor plan for a research and AI laboratory.">
+  <title>Laboratory Floor Plan</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b1624'/%3E%3Cpath d='M16 48V16h32v32M16 32h32M32 16v32' fill='none' stroke='%237ce5e8' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ARCHITECTURAL STUDY · REV 01</p>
+        <h1>LABORATORY FLOOR PLAN</h1>
+      </div>
+      <div class="sheet-meta" aria-label="Drawing metadata">
+        <span>RESEARCH / AI LAB</span>
+        <span>PLAN · 01</span>
+      </div>
+    </header>
+
+    <section class="summary" aria-label="Floor plan summary">
+      <div><span>Room</span><strong id="room-size">10 m × 7 m</strong></div>
+      <div><span>Scale</span><strong>1 m = 100 units</strong></div>
+      <div><span>Workstations</span><strong id="workstation-count">8</strong></div>
+      <div><span>Drawing status</span><strong class="status"><i></i> Placeholder layout</strong></div>
+    </section>
+
+    <section class="plan-card" aria-label="Laboratory floor plan drawing">
+      <div class="plan-toolbar">
+        <span><b class="legend-line"></b> WALLS / PARTITIONS</span>
+        <span><b class="legend-window"></b> WINDOWS</span>
+        <span><b class="legend-point"></b> SERVICES</span>
+        <span class="north-mark" aria-label="North arrow">N <b>↑</b></span>
+      </div>
+      <div id="floor-plan" class="floor-plan" role="img" aria-label="10 by 7 metre laboratory floor plan"></div>
+      <div class="plan-caption"><span>ALL DIMENSIONS IN METRES UNLESS NOTED</span><span>NOT FOR CONSTRUCTION</span></div>
+    </section>
+
+    <section class="export-panel" aria-labelledby="export-heading">
+      <div>
+        <p class="eyebrow">OUTPUT</p>
+        <h2 id="export-heading">Export Floor Plan</h2>
+      </div>
+      <div class="export-actions">
+        <button type="button" data-export="svg">Download SVG</button>
+        <button type="button" data-export="png">Download PNG</button>
+        <button type="button" data-export="print">Print / Save as PDF</button>
+      </div>
+    </section>
+
+    <footer>LAB-FP-001 <span>•</span> Static drawing · Geometry is configured in <code>script.js</code></footer>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
