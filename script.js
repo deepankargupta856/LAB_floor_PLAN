@@ -7,18 +7,18 @@ const SCALE = 100;
 const room = { width: 10, height: 7 };
 
 const objects = [
-  { type: "student-desk", x: 0.75, y: 0.95, width: 2.15, height: 4.35, stations: 8, label: "CENTRAL STUDENT DESK" },
-  { type: "display", x: 4.15, y: 0.48, width: 1.7, height: 0.22, label: "IFP / INTERACTIVE DISPLAY" },
-  { type: "table", x: 3.8, y: 1.72, width: 2.55, height: 1.35, label: "CONFERENCE TABLE" },
-  { type: "desk", x: 7.2, y: 1.0, width: 1.7, height: 0.72, label: "LAB ASSOCIATE 1" },
-  { type: "desk", x: 7.2, y: 2.0, width: 1.7, height: 0.72, label: "LAB ASSOCIATE 2" },
+  { type: "student-desk", x: 1.15, y: 0.95, width: 2.15, height: 4.35, stations: 10, label: "CENTRAL STUDENT DESK" },
+  { type: "display", x: 3.9, y: 0.42, width: 2.2, height: 0.3, label: "IFP / INTERACTIVE DISPLAY" },
+  { type: "table", x: 4.15, y: 1.4, width: 2.55, height: 1.35, rotation: 90, label: "CONFERENCE TABLE" },
+  { type: "desk", x: 7.15, y: 0.95, width: 1.7, height: 0.72, rotation: 90, label: "LAB ASSOCIATE 1" },
+  { type: "desk", x: 8.1, y: 0.95, width: 1.7, height: 0.72, rotation: 90, label: "LAB ASSOCIATE 2" },
   { type: "gpu", x: 7.15, y: 3.0, width: 1.65, height: 0.9, label: "GPU WORKSTATION" },
   { type: "bench", x: 6.95, y: 4.2, width: 2.05, height: 0.82, label: "EQUIPMENT / WORKBENCH" },
   { type: "cabin", x: 0.72, y: 5.65, width: 2.7, height: 1.0, label: "PI CABIN" },
   { type: "desk", x: 1.0, y: 5.92, width: 1.65, height: 0.42, label: "PI DESK" },
-  { type: "cabinet", x: 3.9, y: 5.65, width: 1.15, height: 0.55, label: "STORAGE" },
-  { type: "cabinet", x: 5.25, y: 5.65, width: 1.15, height: 0.55, label: "STORAGE" },
-  { type: "cabinet", x: 6.6, y: 5.65, width: 1.15, height: 0.55, label: "STORAGE" },
+  { type: "cabinet", x: 3.75, y: 6.02, width: 1.15, height: 0.45, label: "STORAGE A" },
+  { type: "cabinet", x: 5.1, y: 6.02, width: 1.15, height: 0.45, label: "STORAGE B" },
+  { type: "cabinet", x: 6.45, y: 6.02, width: 1.15, height: 0.45, label: "STORAGE C" },
   { type: "electrical", x: 0.42, y: 1.35, label: "E" }, { type: "electrical", x: 0.42, y: 3.1, label: "E" },
   { type: "electrical", x: 0.42, y: 5.3, label: "E" }, { type: "electrical", x: 9.58, y: 1.45, label: "E" },
   { type: "electrical", x: 9.58, y: 4.55, label: "E" }, { type: "lan", x: 3.4, y: 1.25, label: "LAN" },
@@ -89,9 +89,9 @@ function drawObject(svg, obj) {
     addText(g, x + w / 2, y + h / 2 + 12, `${obj.stations} LAPTOP PLUG-IN STATIONS`, "object-label", "middle");
     for (let i = 0; i < obj.stations; i++) {
       const seatY = y + 25 + i * ((h - 50) / (obj.stations - 1));
-      g.appendChild(el("circle", { cx: x + w + 24, cy: seatY, r: 16, class: "chair" }));
-      g.appendChild(el("circle", { cx: x + w - 16, cy: seatY, r: 6, class: "plug" }));
-      addText(g, x + w - 16, seatY + 4, "P", "service-label", "middle");
+      g.appendChild(el("circle", { cx: x - 24, cy: seatY, r: 16, class: "chair" }));
+      g.appendChild(el("circle", { cx: x + 16, cy: seatY, r: 6, class: "plug" }));
+      addText(g, x + 16, seatY + 4, "P", "service-label", "middle");
     }
   } else if (obj.type === "cabin") {
     g.appendChild(el("rect", { x, y, width: w, height: h, class: "cabin" }));
@@ -120,6 +120,7 @@ function drawObject(svg, obj) {
   }
   if (obj.label && !["electrical", "lan", "workstation", "student-desk", "cabin"].includes(obj.type)) addText(g, x + w / 2, y + h / 2 + 4, obj.label, obj.type === "table" ? "zone-label" : "object-label", "middle");
   if (obj.type === "workstation") addText(g, x + w / 2, y + h / 2 - 2, obj.label.replace("Workstation ", "WS "), "object-label", "middle");
+  if (obj.rotation) g.setAttribute("transform", `rotate(${obj.rotation} ${x + w / 2} ${y + h / 2})`);
   svg.appendChild(g);
 }
 
