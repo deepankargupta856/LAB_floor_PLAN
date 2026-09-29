@@ -7,18 +7,18 @@ const SCALE = 100;
 const room = { width: 10, height: 7 };
 
 const objects = [
-  { type: "student-desk", x: 1.15, y: 0.95, width: 2.15, height: 4.35, stations: 10, label: "CENTRAL STUDENT DESK" },
+  { type: "student-desk", x: 1.0, y: 1.35, width: 2.3, height: 2.65, stations: 10, seats: { left: 4, right: 4, top: 1, bottom: 1 }, label: "CENTRAL STUDENT DESK" },
   { type: "display", x: 3.9, y: 0.42, width: 2.2, height: 0.3, label: "IFP / INTERACTIVE DISPLAY" },
-  { type: "table", x: 4.15, y: 1.4, width: 2.55, height: 1.35, rotation: 90, label: "CONFERENCE TABLE" },
-  { type: "desk", x: 7.15, y: 0.95, width: 1.7, height: 0.72, rotation: 90, label: "LAB ASSOCIATE 1" },
-  { type: "desk", x: 8.1, y: 0.95, width: 1.7, height: 0.72, rotation: 90, label: "LAB ASSOCIATE 2" },
+  { type: "table", x: 3.75, y: 1.45, width: 2.55, height: 1.35, rotation: 90, label: "CONFERENCE TABLE" },
+  { type: "desk", x: 6.85, y: 0.95, width: 1.4, height: 0.72, label: "LAB ASSOCIATE 1" },
+  { type: "desk", x: 8.4, y: 0.95, width: 1.4, height: 0.72, label: "LAB ASSOCIATE 2" },
   { type: "gpu", x: 7.15, y: 3.0, width: 1.65, height: 0.9, label: "GPU WORKSTATION" },
   { type: "bench", x: 6.95, y: 4.2, width: 2.05, height: 0.82, label: "EQUIPMENT / WORKBENCH" },
-  { type: "cabin", x: 0.72, y: 5.65, width: 2.7, height: 1.0, label: "PI CABIN" },
-  { type: "desk", x: 1.0, y: 5.92, width: 1.65, height: 0.42, label: "PI DESK" },
-  { type: "cabinet", x: 3.75, y: 6.02, width: 1.15, height: 0.45, label: "STORAGE A" },
-  { type: "cabinet", x: 5.1, y: 6.02, width: 1.15, height: 0.45, label: "STORAGE B" },
-  { type: "cabinet", x: 6.45, y: 6.02, width: 1.15, height: 0.45, label: "STORAGE C" },
+  { type: "cabin", x: 0.62, y: 5.0, width: 3.25, height: 1.55, label: "PI CABIN" },
+  { type: "desk", x: 1.0, y: 5.48, width: 2.05, height: 0.5, label: "PI DESK" },
+  { type: "cabinet", x: 6.55, y: 5.95, width: 1.05, height: 0.58, label: "STORAGE A" },
+  { type: "cabinet", x: 7.8, y: 5.95, width: 1.05, height: 0.58, label: "STORAGE B" },
+  { type: "cabinet", x: 9.05, y: 5.95, width: 0.48, height: 0.58, label: "C" },
   { type: "electrical", x: 0.42, y: 1.35, label: "E" }, { type: "electrical", x: 0.42, y: 3.1, label: "E" },
   { type: "electrical", x: 0.42, y: 5.3, label: "E" }, { type: "electrical", x: 9.58, y: 1.45, label: "E" },
   { type: "electrical", x: 9.58, y: 4.55, label: "E" }, { type: "lan", x: 3.4, y: 1.25, label: "LAN" },
@@ -87,12 +87,16 @@ function drawObject(svg, obj) {
     g.appendChild(el("rect", { x, y, width: w, height: h, rx: 4, class: "long-desk" }));
     addText(g, x + w / 2, y + h / 2 - 8, obj.label, "zone-label", "middle");
     addText(g, x + w / 2, y + h / 2 + 12, `${obj.stations} LAPTOP PLUG-IN STATIONS`, "object-label", "middle");
-    for (let i = 0; i < obj.stations; i++) {
-      const seatY = y + 25 + i * ((h - 50) / (obj.stations - 1));
-      g.appendChild(el("circle", { cx: x - 24, cy: seatY, r: 16, class: "chair" }));
-      g.appendChild(el("circle", { cx: x + 16, cy: seatY, r: 6, class: "plug" }));
-      addText(g, x + 16, seatY + 4, "P", "service-label", "middle");
-    }
+    const placeSeat = (seatX, seatY, plugX, plugY) => {
+      g.appendChild(el("circle", { cx: seatX, cy: seatY, r: 16, class: "chair" }));
+      g.appendChild(el("circle", { cx: plugX, cy: plugY, r: 6, class: "plug" }));
+      addText(g, plugX, plugY + 4, "P", "service-label", "middle");
+    };
+    const verticalStep = (h - 55) / (obj.seats.left - 1);
+    for (let i = 0; i < obj.seats.left; i++) placeSeat(x - 24, y + 27 + i * verticalStep, x + 16, y + 27 + i * verticalStep);
+    for (let i = 0; i < obj.seats.right; i++) placeSeat(x + w + 24, y + 27 + i * verticalStep, x + w - 16, y + 27 + i * verticalStep);
+    placeSeat(x + w / 2, y - 24, x + w / 2, y + 16);
+    placeSeat(x + w / 2, y + h + 24, x + w / 2, y + h - 16);
   } else if (obj.type === "cabin") {
     g.appendChild(el("rect", { x, y, width: w, height: h, class: "cabin" }));
     line(g, x + w - 42, y + h, x + w - 42, y + h - 36, "cabin-door");
@@ -103,7 +107,6 @@ function drawObject(svg, obj) {
       g.appendChild(el("rect", { x: x + w * .37, y: y + 7, width: w * .26, height: h * .3, class: "monitor" }));
       g.appendChild(el("circle", { cx: x + w / 2, cy: y + h + 19, r: 19, class: "chair" }));
     } else if (obj.type === "gpu") {
-      g.appendChild(el("rect", { x: x + 14, y: y + 14, width: 24, height: h - 28, class: "equipment" }));
       g.appendChild(el("circle", { cx: x + w - 30, cy: y + h / 2, r: 8, class: "equipment-dot" }));
     } else if (obj.type === "bench") {
       for (let i = 1; i < 4; i++) line(g, x + w * i / 4, y + 8, x + w * i / 4, y + h - 8, "bench-mark");
